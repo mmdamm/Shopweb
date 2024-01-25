@@ -24,12 +24,13 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(max_length=255)
     description = models.TextField(max_length=1200)
     inventory = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField(default=0)
+    weight = models.PositiveIntegerField(default=0)
     off = models.PositiveIntegerField(default=0)
-    new_price = models.PositiveIntegerField(default=0)  # price after off
+    new_price = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
