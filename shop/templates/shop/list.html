@@ -37,8 +37,15 @@
         </div>
 
     </div>
+    products:
+    <br>
 {% for ct in products  %}
-    {{ ct.name }}
+    <br>
+    <div class="small-div">
+
+        <a href="{{ ct.get_absolute_url }}" >{{ ct.name }}</a>
+    </div>
+
     {% endfor %}
 
 {% endblock %}
