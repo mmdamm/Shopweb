@@ -10,9 +10,9 @@ class Cart:
         self.cart = cart
 
     def add(self, product):
-        product_id = str(Product.id)
+        product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 1, 'price': Product.new_price, 'weight': Product.weight}
+            self.cart[product_id] = {'quantity': 1, 'price': product.new_price, 'weight': product.weight}
         else:
             if self.cart[product_id]['quantity'] < product.inventory:
                 self.cart[product_id]['quantity'] += 1
@@ -58,3 +58,7 @@ class Cart:
 
     def save(self):
         self.session.modified = True
+
+    def get_final_price(self):
+        price = sum(item['price'] * item['quantity'] for item in self.cart.values())
+        return price
