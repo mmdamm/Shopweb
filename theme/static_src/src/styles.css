@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+     .offer{
+        @apply relative text-gray-400;
+    }
+    .offer::after{
+        content:"";
+        width: 100%;
+        inset: 0;
+        position: absolute;
+        height: 1px;
+        margin: auto;
+        background-color:#EF4444;
+        top: -2px;
+    }
+    }

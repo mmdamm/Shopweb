@@ -48,6 +48,9 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
+    def percent(self):
+        return round((self.off/self.price)*100)
+
 
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")

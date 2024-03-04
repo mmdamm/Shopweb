@@ -22,10 +22,14 @@
             <div class="price">
                 <span class="original-price">قیمت: {{ product.price}}</span>
                 <br>
+                {% if product.off %}
                 <span class="discounted-price-d">قیمت پس از تخفیف: {{ product.new_price}}</span>
+                {% endif %}
             </div>
             <br>
+            {% if product.inventory %}
             <button type="button" id="add-cart">Add to Cart</button>
+            {% endif %}
         </div>
 
         <div class="product-images">

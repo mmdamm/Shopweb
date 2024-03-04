@@ -11,14 +11,14 @@
             {% for item in cart %}
 
                 <div class="product-item" data-item-id="{{ item.product.id }}">
-                    <a href="{% url 'shop:product_detail' item.product.id item.product.slug  %}">
+
                         <img src="{{ item.product.images.first.file.url }}" class="product-image">
-                    </a>
+
                     <div class="product-info">
                         <h3>
-                            <a href="{% url 'shop:product_detail' item.product.id item.product.slug  %}">
+                          
                             نام محصول : {{ item.product.name }}
-                            </a>
+
                         </h3>
                         <p>تعداد: <span id="item-quantity-{{ item.product.id }}">{{ item.quantity }}</span></p>
                         <p>قیمت هر محصول: <span>{{ item.price }}</span></p>
