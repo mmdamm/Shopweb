@@ -20,7 +20,7 @@ class Cart:
 
     def decrease(self, product):
         product_id = str(product.id)
-        if self.cart[product_id]['quantity'] > 0:
+        if self.cart[product_id]['quantity'] > 1:
             self.cart[product_id]['quantity'] -= 1
         self.save()
 
@@ -37,7 +37,8 @@ class Cart:
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
-        return sum(item['price'] * item['quantity'] for item in self.cart.values())
+        price = sum(item['price'] * item['quantity'] for item in self.cart.values())
+        return price
 
     def get_post_price(self):
         weight = sum(item['quantity'] * item['weight'] for item in self.cart.values())
@@ -60,5 +61,4 @@ class Cart:
         self.session.modified = True
 
     def get_final_price(self):
-        price = sum(item['price'] * item['quantity'] for item in self.cart.values())
-        return price
+        return self.get_total_price() + self.get_post_price()

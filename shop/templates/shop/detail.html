@@ -47,7 +47,6 @@
         $(document).ready(function(){
             $('#add-cart').click(function(){
                 var button = $(this);
-
                 $.ajax({
                    type: 'POST',
                    url: '{% url 'cart:add_to_cart' product.id %}',
@@ -61,5 +60,4 @@
             });
         });
     </script>
-
 {% endblock %}
