@@ -16,6 +16,7 @@ def add_to_cart(request, product_id):
         product = get_object_or_404(Product, id=product_id)
         cart.add(product)
         cart.save()
+
         context = {
             'item_count': len(cart),
             'total_price': cart.get_total_price(),
@@ -33,12 +34,13 @@ def cart_detail(request):
     }
     return render(request, 'cart/detail.html', context)
 
+
 @require_POST
 def update_quantity(request):
     item_id = request.POST.get('item_id')
     action = request.POST.get('action')
     try:
-        product = get_object_or_404(Product,id=item_id)
+        product = get_object_or_404(Product, id=item_id)
         cart = Cart(request)
         if action == 'add':
             cart.add(product)
@@ -46,14 +48,32 @@ def update_quantity(request):
             cart.decrease(product)
 
         context = {
+            'total': cart.cart[item_id]['quantity'] * cart.cart[item_id]['price'],
             'item_count': len(cart),
             'total_price': cart.get_total_price(),
             'quantity': cart.cart[item_id]['quantity'],
-            'total': cart.cart[item_id]['quantity'] * cart.cart[item_id]['price'],
+
             'final_price': cart.get_final_price(),
             'success': True,
         }
         return JsonResponse(context)
     except:
-        return JsonResponse({'success':False,'error':'Item not found'}, status=status.HTTP_400_NOT_FOUND)
+        return JsonResponse({'success': False, 'error': 'Item not found'}, status=status.HTTP_400_NOT_FOUND)
 
+
+@require_POST
+def remove_item(request):
+    item_id = request.POST.get('item_id')
+    try:
+        product = get_object_or_404(Product, id=item_id)
+        cart = Cart(request)
+        cart.remove(product)
+        context = {
+            'item_count': len(cart),
+            'final_price': cart.get_final_price(),
+            'total_price': cart.get_total_price(),
+            'success': True,
+        }
+        return JsonResponse(context)
+    except:
+        return JsonResponse({'success': False, "error": 'Item not found'}, status=status.HTTP_400_NOT_FOUND)

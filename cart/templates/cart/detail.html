@@ -90,7 +90,7 @@
             function removeItem(itemId){
                 $.ajax({
                     type: 'POST',
-
+                    url: '{% url 'cart:remove_item' %}',
                     data: {
                         'item_id': itemId,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
