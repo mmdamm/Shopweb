@@ -45,16 +45,18 @@
             <h1> list product</h1>
         {% endif %}
     </div>
-<div class="flex ">
-    <div class="bg-slate-500 p-3 border-2 m-1" >
+<div class="flex">
+    <div class="bg-slate-500 p-3 border-2 w-[300px] text-center " >
           <a href="{% url 'shop:product_list' %}">All</a>
         {% for ct in categories %}
         <br>
-            <a href="{{ ct.get_absolute_url }}" class="">{{ ct.name }}</a>
+        <div class="py-3 text-stone-800">
+            <a href="{{ ct.get_absolute_url }}" class="text-neutral-800 text-lg font-bold">{{ ct.name }}</a>
+        </div>
         {% endfor %}
     </div>
 
-<div class="grid grid-cols-4 pos">
+<div class="grid grid-cols-4 flex-1">
         {%for i in products%}
             <div class="swiper-slide">
             <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3 ">
