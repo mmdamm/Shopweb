@@ -1,12 +1,13 @@
 from django.db import models
-from ..shop import models
+from shop.models import Product
 
 
 # Create your models here.
 
 
 class Order(models.Model):
-    name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=11)
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=10)
@@ -18,15 +19,14 @@ class Order(models.Model):
     class Meta:
         ordering = ['-created']
         indexes = [
-            models.index(fields=['-created'])
+            models.Index(fields=['-created'])
         ]
 
     def __str__(self):
         return f"order {self.id}"
 
     def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all )
-
+        return sum(item.get_cost() for item in self.items.all)
 
     def get_post_cost(self):
         weight = sum(item.get_weight() for item in self.items.all)
@@ -39,13 +39,13 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASACADE)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     weight = models.PositiveIntegerField(default=0)
 
-
     def get_cost(self):
         return self.price * self.quantity
+
     def get_weight(self):
         return self.quantity * self.weight

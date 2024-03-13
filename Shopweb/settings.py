@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'tailwind',
     'theme',
-    'django_browser_reload'
+    'django_browser_reload',
+    'orders.apps.OrdersConfig',
+    'account.apps.AccountConfig'
 ]
 
 MIDDLEWARE = [
@@ -92,7 +94,7 @@ DATABASES = {
     }
 }
 
-
+AUTH_USER_MODEL = "account.ShopUser"
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
