@@ -61,8 +61,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Shopweb.urls'
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
-    "127.0.0.1",
+    "0.0.0.0",
 ]
+# ALLOWED_HOSTS = ['0.0.0.0']
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
