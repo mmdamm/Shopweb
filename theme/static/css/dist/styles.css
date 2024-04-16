@@ -826,6 +826,10 @@ select {
   margin: auto;
 }
 
+.m-\[30px\] {
+  margin: 30px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -846,6 +850,26 @@ select {
 
 .mt-2\.5 {
   margin-top: 0.625rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
+.ml-5 {
+  margin-left: 1.25rem;
+}
+
+.ml-6 {
+  margin-left: 1.5rem;
+}
+
+.ml-\[30px\] {
+  margin-left: 30px;
+}
+
+.ml-\[100px\] {
+  margin-left: 100px;
 }
 
 .line-clamp-2 {
@@ -899,6 +923,14 @@ select {
   height: 100vh;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
+.h-\[100px\] {
+  height: 100px;
+}
+
 .w-5 {
   width: 1.25rem;
 }
@@ -942,6 +974,10 @@ select {
 
 .items-center {
   align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .justify-center {
@@ -1006,6 +1042,10 @@ select {
   padding: 1.25rem;
 }
 
+.p-\[-2px\] {
+  padding: -2px;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1027,6 +1067,18 @@ select {
 
 .pt-8 {
   padding-top: 2rem;
+}
+
+.pl-7 {
+  padding-left: 1.75rem;
+}
+
+.pl-\[100px\] {
+  padding-left: 100px;
+}
+
+.pl-\[200px\] {
+  padding-left: 200px;
 }
 
 .text-center {
@@ -1120,6 +1172,10 @@ select {
 .text-zinc-700 {
   --tw-text-opacity: 1;
   color: rgb(63 63 70 / var(--tw-text-opacity));
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .transition-all {

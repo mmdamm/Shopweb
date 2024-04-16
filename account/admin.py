@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.admin import UserAdmin
 from .forms import ShopUserCreationForm, ShopUserChangeForm
 
+
 # Register your models here.
 
 
@@ -17,11 +18,11 @@ class ShopUserAdmin(UserAdmin):
         (None, {'fields': ('phone', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'address',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_join', )}),
+        ('Important dates', {'fields': ('last_login', 'date_join',)}),
     )
 
     add_fieldsets = (
-        (None, {'fields': ('phone', 'password')}),
+        (None, {'fields': ('phone', 'password1', 'password2')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'address',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_join',)}),
