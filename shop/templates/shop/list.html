@@ -6,7 +6,7 @@
 {% load template_tag%}
     <head dir="rtl">
         {% tailwind_css %}
-                <svg class="hidden">
+        <svg class="hidden">
             <symbol id="curve" width="100" height="22" viewBox="0 0 100 22" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50 0C69 0 81 22 100 22L0 22C18.75 22 31 0 50 0Z"/>
             </symbol>
@@ -42,20 +42,20 @@
 <!--header-->
 <div class="header fix">
     {% if category %}
-        <h1>List of products by category {{ category.name }}</h1>
+        <h3>List of products by category {{ category.name }}</h3>
     {% else %}
         <h1> list product</h1>
     {% endif %}
 </div>
 
-<div class="flex justify-center items-first">
+<div class="flex justify-evenly items-first">
 <!--    list div-->
-    <div class="felx-col">
+    <div class="flex flex-col items-center gap-x-5">
         <div class="" >
             <div class="grid grid-cols-4 gap-x-1">
         {%for i in products%}
-            <div class="swiper-slide">
-                <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3 ">
+            <div class="w-[300px]">
+                <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3 w-[300px] ">
                     <a href="{% url 'shop:product_detail' i.id i.slug %}">
                         <div class="dark:bg-zinc-700 justify-between p-2 m-4 relative  w-[255px] h-[472px] ">
                             <div class="p-5  pt-8 mb-5">
@@ -65,7 +65,7 @@
                             <span class="absolute top-1.5 right-1.5 rounded-full  block h-[30px] leading-[30px] bg-orange-300 text-white dark:text-zinc-700 px-3.5">{{i.percent}}%</span>
                             {% endif %}
                             <h5 class="font-dana-medium text-xl h-14 text-zinc-700 dark:text-white line-clamp-2"> {{ i.name }}</h5>
-                </a>
+                    </a>
             {% if not i.inventory %}
                 <div>
                     <span class="text-red-400  text-xl pt-3">موجود نیست</span>
@@ -124,12 +124,12 @@
     </div>
     </div>
 <!--    expensive product-->
-    <p class="text-lg">order by expensive product: </p>
-    <div class="flex">
+    <h1 class="text-lg">order by expensive product: </h1>
+    <div class="grid grid-cols-4">
     {% most_expensive as ep %}
     {% for i in ep %}
         {% if i.inventory%}
-            <div class="swiper-slide">
+            <div class="flex flex-nowrap">
                 <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3  flex">
                     <a href="{% url 'shop:product_detail' i.id i.slug %}">
                         <div class="dark:bg-zinc-700 justify-between p-2 relative m-auto w-[255px] h-[472px] ">
@@ -197,8 +197,8 @@
             {% include 'partials/pagination.html' with page=products %}
     </div>
 </div>
-    <div class="">
-            <div class="bg-slate-500 p-3 border-2 w-[300px] relative " >
+    <div class="w-[300px] h-[500px] ">
+            <div class="bg-slate-500 p-3 border-2 w-[300px] h-[500px] relative " >
           <a href="{% url 'shop:product_list' %}" class="text-lg">همه</a>
 
         {% for ct in categories %}
@@ -228,30 +228,6 @@
         </div>
     </div>
     </div>
-
-<script>
-var carsAndModels = {};
-carsAndModels['VO'] = ['V70', 'XC60', 'XC90'];
-carsAndModels['VW'] = ['Golf', 'Polo', 'Scirocco', 'Touareg'];
-carsAndModels['BMW'] = ['M6', 'X5', 'Z3'];
-
-function ChangeCarList() {
-    var carList = document.getElementById("car");
-    var modelList = document.getElementById("carmodel");
-    var selCar = carList.options[carList.selectedIndex].value;
-    while (modelList.options.length) {
-        modelList.remove(0);
-    }
-    var cars = carsAndModels[selCar];
-    if (cars) {
-        var i;
-        for (i = 0; i < cars.length; i++) {
-            var car = new Option(cars[i], i);
-            modelList.options.add(car);
-        }
-    }
-}
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -294,7 +270,6 @@ function ChangeCarList() {
 
         });
     }
-
         function removeItem(itemId){
             $.ajax({
                 type: 'POST',
@@ -319,7 +294,6 @@ function ChangeCarList() {
         }
 
     });
-
 </script>
 {% endblock %}
 

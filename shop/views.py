@@ -13,7 +13,7 @@ def product_list(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
-    paginator = Paginator(products, 4)
+    paginator = Paginator(products, 16)
     page_number = request.GET.get('page', 1)
     try:
         products = paginator.page(page_number)
@@ -31,8 +31,10 @@ def product_list(request, category_slug=None):
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, slug=slug, id=id)
+    category = product.category
     # request.session.delete()
     context = {
         'product': product,
+        'category': category,
     }
     return render(request, 'shop/detail.html', context)

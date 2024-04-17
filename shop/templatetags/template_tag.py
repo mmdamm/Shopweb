@@ -6,16 +6,13 @@ from ..views import *
 register = template.Library()
 
 
-@register.inclusion_tag("shop/list2.html")
-def most_expensive(count=6):
-    exp_product = Product.objects.all().order_by('-new_price')[:count]
-    context = {
-        'exp_product': exp_product
-    }
-    print(exp_product)
-    return context
+@register.simple_tag()
+def most_expensive():
+    return Product.objects.all().order_by('-new_price')[:5]
+
 
 @register.simple_tag()
-def most_expensive(count=6):
-    return Product.objects.all().order_by('-new_price')[:count]
-
+def suggestions(category, id):
+    product = Product.objects.filter(category=category).exclude(id=id)[:5]
+    # name = products.name
+    return (product)
