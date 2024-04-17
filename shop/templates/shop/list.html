@@ -39,58 +39,33 @@
             </symbol>
         </svg>
     </head>
-    <div class="header">
-        {% if category %}
-            <h1>List of products by category {{ category.name }}</h1>
-        {% else %}
-            <h1> list product</h1>
-        {% endif %}
-    </div>
-<div class="flex relative">
-    <div class="bg-slate-500 p-3 border-2 w-[300px] relative " >
-          <a href="{% url 'shop:product_list' %}" class="text-lg">همه</a>
+<!--header-->
+<div class="header fix">
+    {% if category %}
+        <h1>List of products by category {{ category.name }}</h1>
+    {% else %}
+        <h1> list product</h1>
+    {% endif %}
+</div>
 
-        {% for ct in categories %}
-        <br>
-        <div class="py-3 text-stone-800">
-            <a href="{{ ct.get_absolute_url }}" class="text-neutral-800 text-lg font-bold"><li>{{ ct.name }}</li></a>
-        </div>
-        {% endfor %}
-       <hr>
-        <span>فیلتر</span>
-        <div class="">
-            <span class="m-3 text-lg">برند</span>
-            <select id="car" onchange="ChangeCarList()">
-             <option value="">پوشاک</option>
-             <option value="VO">اریان نخ</option>
-             <option value="VW">رایسی</option>
-             <option value="BMW">ری بن</option>
-            </select>
-            <br>
-            <br>
-            <hr>
-            <br>
-            <span class="m-3 text-lg">محدوده قیمت</span>
-            <select id="car۱" onchange="ChangeCarList()">
-             <option value="">گرانترین</option>
-             <option value="VO"> ارزانترین</option>
-            </select>
-        </div>
-    </div>
-    <div class="grid grid-cols-4 flex-1">
+<div class="flex justify-center items-first">
+<!--    list div-->
+    <div class="felx-col">
+        <div class="" >
+            <div class="grid grid-cols-4 gap-x-1">
         {%for i in products%}
             <div class="swiper-slide">
-            <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3 ">
-                <a href="{% url 'shop:product_detail' i.id i.slug %}">
-                <div class="dark:bg-zinc-700 justify-between p-2 relative m-auto w-[255px] h-[472px] ">
-                    <div class="p-5  pt-8 mb-5">
-                        <img src="{{ i.images.first.file.url }} " class=" h-[250px] w-[250px] mx-auto my-auto items-center" loading="lazy">
-                    </div>
-                    {% if  i.off and i.inventory %}
-                <span class="absolute top-1.5 right-1.5 rounded-full  block h-[30px] leading-[30px] bg-orange-300 text-white dark:text-zinc-700 px-3.5">{{i.percent}}%</span>
-            {% endif %}
-            <h5 class="font-dana-medium text-xl h-14 text-zinc-700 dark:text-white line-clamp-2"> {{ i.name }}</h5>
-                    </a>
+                <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3 ">
+                    <a href="{% url 'shop:product_detail' i.id i.slug %}">
+                        <div class="dark:bg-zinc-700 justify-between p-2 m-4 relative  w-[255px] h-[472px] ">
+                            <div class="p-5  pt-8 mb-5">
+                                <img src="{{ i.images.first.file.url }} " class=" h-[250px] w-[250px] mx-auto my-auto items-center" loading="lazy">
+                            </div>
+                            {% if  i.off and i.inventory %}
+                            <span class="absolute top-1.5 right-1.5 rounded-full  block h-[30px] leading-[30px] bg-orange-300 text-white dark:text-zinc-700 px-3.5">{{i.percent}}%</span>
+                            {% endif %}
+                            <h5 class="font-dana-medium text-xl h-14 text-zinc-700 dark:text-white line-clamp-2"> {{ i.name }}</h5>
+                </a>
             {% if not i.inventory %}
                 <div>
                     <span class="text-red-400  text-xl pt-3">موجود نیست</span>
@@ -146,35 +121,39 @@
             </div>
         </div>
         {%endfor%}
+    </div>
+    </div>
+<!--    expensive product-->
     <p class="text-lg">order by expensive product: </p>
+    <div class="flex">
     {% most_expensive as ep %}
     {% for i in ep %}
         {% if i.inventory%}
             <div class="swiper-slide">
-            <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3 ">
-                <a href="{% url 'shop:product_detail' i.id i.slug %}">
-                <div class="dark:bg-zinc-700 justify-between p-2 relative m-auto w-[255px] h-[472px] ">
-                    <div class="p-5  pt-8 mb-5">
-                        <img src="{{ i.images.first.file.url }} " class=" h-[250px] w-[250px] mx-auto my-auto items-center" loading="lazy">
-                    </div>
-                    {% if  i.off and i.inventory %}
-                <span class="absolute top-1.5 right-1.5 rounded-full  block h-[30px] leading-[30px] bg-orange-300 text-white dark:text-zinc-700 px-3.5">{{i.percent}}%</span>
-            {% endif %}
-            <h5 class="font-dana-medium text-xl h-14 text-zinc-700 dark:text-white line-clamp-2"> {{ i.name }}</h5>
-            {% if i.inventory %}
-            <div class="mt-2.5 flex gap-x-2.5">
-                <div class="text-teal-600 dark:text-emerald-500 ">
-                    <span class="font-dana-demibold text-xl"> {{ i.new_price }}</span>
-                    <span class="text-sm tracking-tighter ">تومان</span>
-                </div>
-                {% if i.off %}
-                    <div class="offer  text-gray-400">
-                        <span class="font-dana-regular text-xl"> {{ i.price }}</span>
-                        <span class="text-sm tracking-tighter ">تومان</span>
-                    </div>
+                <div class="child:rounded-2xl child:bg-white child:shadow-normal m-3  flex">
+                    <a href="{% url 'shop:product_detail' i.id i.slug %}">
+                        <div class="dark:bg-zinc-700 justify-between p-2 relative m-auto w-[255px] h-[472px] ">
+                            <div class="p-5  pt-8 mb-5">
+                                <img src="{{ i.images.first.file.url }} " class=" h-[255px] w-[250px] mx-auto my-auto items-center" loading="lazy">
+                        </div>
+                        {% if  i.off and i.inventory %}
+                            <span class="absolute top-1.5 right-1.5 rounded-full  block h-[30px] leading-[30px] bg-orange-300 text-white dark:text-zinc-700 px-3.5">{{i.percent}}%</span>
+                        {% endif %}
+                         <h5 class="font-dana-medium text-xl h-14 text-zinc-700 dark:text-white line-clamp-2"> {{ i.name }}</h5>
+                        {% if i.inventory %}
+                        <div class="mt-2.5 flex gap-x-2.5">
+                             <div class="text-teal-600 dark:text-emerald-500 ">
+                                <span class="font-dana-demibold text-xl"> {{ i.new_price }}</span>
+                                <span class="text-sm tracking-tighter ">تومان</span>
+                             </div>
+                            {% if i.off %}
+                              <div class="offer  text-gray-400">
+                                 <span class="font-dana-regular text-xl"> {{ i.price }}</span>
+                                 <span class="text-sm tracking-tighter ">تومان</span>
+                             </div>
+                            {% endif %}
+                         </div>
                 {% endif %}
-            </div>
-        {% endif %}
             <div class=" flex items-center  justify-between mt-2.5">
                 <div class="flex gap-x-3 ">
                     <a href="{% url 'cart:add_to_cart' i.id %}">
@@ -213,9 +192,42 @@
         </div>
         {%endif%}
     {% endfor %}
-
+    </div>
+    <div class="text-center justify-between">
+            {% include 'partials/pagination.html' with page=products %}
+    </div>
 </div>
+    <div class="">
+            <div class="bg-slate-500 p-3 border-2 w-[300px] relative " >
+          <a href="{% url 'shop:product_list' %}" class="text-lg">همه</a>
 
+        {% for ct in categories %}
+        <br>
+        <div class="py-3 text-stone-800">
+            <a href="{{ ct.get_absolute_url }}" class="text-neutral-800 text-lg font-bold"><li>{{ ct.name }}</li></a>
+        </div>
+        {% endfor %}       <hr>
+        <span>فیلتر</span>
+        <div class="">
+            <span class="m-3 text-lg">برند</span>
+            <select id="car" onchange="ChangeCarList()">
+             <option value="">پوشاک</option>
+             <option value="VO">اریان نخ</option>
+             <option value="VW">رایسی</option>
+             <option value="BMW">ری بن</option>
+            </select>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <span class="m-3 text-lg">محدوده قیمت</span>
+            <select id="car۱" onchange="ChangeCarList()">
+             <option value="">گرانترین</option>
+             <option value="VO"> ارزانترین</option>
+            </select>
+        </div>
+    </div>
+    </div>
 
 <script>
 var carsAndModels = {};
@@ -240,4 +252,74 @@ function ChangeCarList() {
     }
 }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function(){
+
+        $('.quantity-add').on('click', function(){
+            updateQuantity($(this).closest('.product-item').data('item-id'), 'add');
+        });
+
+        $('.quantity-decrease').on('click', function(){
+            updateQuantity($(this).closest('.product-item').data('item-id'), 'decrease');
+        });
+
+        $('.quantity-remove').on('click', function(){
+            removeItem($(this).closest('.product-item').data('item-id'));
+        });
+
+    function updateQuantity(itemId, action){
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart:update_quantity' %}',
+            data: {
+                'item_id': itemId,
+                'action': action,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response){
+                if (response.success) {
+                    $('#item_count').text(response.item_count);
+                    $('#total_price').text(response.total_price);
+                    $('#item-quantity-'+ itemId).text(response.quantity);
+                    $('#item-total-'+ itemId).text(response.total);
+                    $('#item-total_price').text(response.total_price);
+                    $('#item-final_price').text(response.final_price);
+                } else {
+                    alert('Error updating quantity!');
+                }
+            }
+
+        });
+    }
+
+        function removeItem(itemId){
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'cart:remove_item' %}',
+                data: {
+                    'item_id': itemId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response){
+                    if (response.success) {
+                        $('#item_count').text(response.item_count);
+                        $('#total_price').text(response.total_price);
+                        $('#item-total_price').text(response.total_price);
+                        $('#item-final_price').text(response.final_price);
+                        $(`.product-item[data-item-id=${itemId}]`).remove();
+                    } else {
+                        alert('Error updating quantity!');
+                    }
+                }
+
+            });
+        }
+
+    });
+
+</script>
 {% endblock %}
+

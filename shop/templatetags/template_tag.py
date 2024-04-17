@@ -6,7 +6,7 @@ from ..views import *
 register = template.Library()
 
 
-@register.inclusion_tag("shop/list.html")
+@register.inclusion_tag("shop/list2.html")
 def most_expensive(count=6):
     exp_product = Product.objects.all().order_by('-new_price')[:count]
     context = {
