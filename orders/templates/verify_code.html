@@ -1,0 +1,8 @@
+{% for message in messages%}
+    {{message}}
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+     <input type="text" placeholder="enter code" name="code">
+    <button type="submit">تایید کد </button>
+</form>

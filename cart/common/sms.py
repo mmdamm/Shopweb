@@ -8,10 +8,10 @@ def send_sms_with_template(receptor, tokens: dict, template):
     """
     try:
         api = KavenegarAPI(
-            '47476645384A4F5A48726849766C4661472B394B3631552F4B54594B4E71766A59624E6F46---'
+            '47476645384A4F5A48726849766C4661472B394B3631552F4B54594B4E71766A59624E6F465564494B35303D'
         )
         params = {
-            'receptor': receptor,
+            'receptor': '09944326389',
             'template': template,
         }
         for key, value in tokens.items():
@@ -28,13 +28,13 @@ def send_sms_with_template(receptor, tokens: dict, template):
         return False
 
 
-def send_sms_normal(receptor):
+def send_sms_normal():
     print('------------------------------------0')
     try:
         api = KavenegarAPI(
             '47476645384A4F5A48726849766C4661472B394B3631552F4B54594B4E71766A59624E6F465564494B35303D')
         params_buyer = {
-            'receptor': receptor,
+            'receptor': '09944326389',
             'message': 'hi',
             'sender': '1000689696'
         }
