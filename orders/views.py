@@ -5,6 +5,7 @@ import random
 from django.http import HttpResponse
 from django.contrib import messages
 from cart.common.sms import send_sms_with_template,send_sms_normal
+from django.contrib.auth import login
 # Create your views here.
 
 
@@ -24,12 +25,31 @@ def verify_phone(request):
                 print(tokens)
                 send_sms_normal()
                 messages.error(request, 'verification code sent successfully.')
-                return HttpResponse(f'success{tokens}',{"form": form})
+                return redirect('orders:verify_code')
     else:
         form = PhoneVerificationForm()
     return render(request, 'verify_phone.html', {'form': form})
 
 
 def verify_code(request):
-    pass
+    if request.method=='POST':
+        code = request.POST.get('code')
+        verification_code = request.session['verification_code']
+        phone = request.session['phone']
+        if code == verification_code:
+            user = ShopUser.objects.create_user(phone)
+            user.set_password('123456')
+            #muss send sms to user
+            user.save()
+            print(user)
+            login(request,user)
+            del request.session['verification_code']
+            del request.session['phone']
+            return redirect('shop:product_list')
+
+        else:
+            messages.error(request,'verification code is wrong')
+
+
+    return render(request,'verify_code.html')
 
