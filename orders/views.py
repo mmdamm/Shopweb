@@ -1,13 +1,14 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .forms import *
 from account.models import ShopUser
 import random
 from django.http import HttpResponse
 from django.contrib import messages
-from cart.common.sms import send_sms_with_template,send_sms_normal
+from cart.common.sms import send_sms_with_template, send_sms_normal
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 # Create your views here.
-
+from cart.cart import Cart
 
 
 def verify_phone(request):
@@ -32,24 +33,46 @@ def verify_phone(request):
 
 
 def verify_code(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         code = request.POST.get('code')
         verification_code = request.session['verification_code']
         phone = request.session['phone']
         if code == verification_code:
             user = ShopUser.objects.create_user(phone)
             user.set_password('123456')
-            #muss send sms to user
+            # muss send sms to user
             user.save()
             print(user)
-            login(request,user)
+            login(request, user)
             del request.session['verification_code']
             del request.session['phone']
-            return redirect('shop:product_list')
+
+            return redirect('orders:create_order')
 
         else:
-            messages.error(request,'verification code is wrong')
+            messages.error(request, 'verification code is wrong')
+
+    return render(request, 'verify_code.html')
 
 
-    return render(request,'verify_code.html')
+@login_required
+def create_order(request):
+    cart = Cart(request)
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid:
+            order = form.save()
+            for item in cart:
+                OrderItem.objects.create(order=order, product=item['product'], price=item['price'],
+                                         quantity=item['quantity'],
+                                         weight=item['weight'])
+            cart.clear()
+            return redirect('shop:product_list')
 
+    else:
+        form = OrderForm()
+    context = {
+        'cart': cart,
+        'form': form,
+    }
+    return render(request, 'create_order.html', context)

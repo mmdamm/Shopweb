@@ -1,0 +1,18 @@
+your prducts:
+<ul>
+    {% for item in cart %}
+    <li>
+        product: {{item.quantity}} X {{item.product.name}}
+
+        <p>total price: {{item.total}}</p>
+    </li>
+    {% endfor %}
+
+</ul>
+
+please enter dataform:
+<form method="post">
+    {{form.as_p}}
+    {% csrf_token %}
+    <button type="submit">Enter</button>
+</form>
