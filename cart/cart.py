@@ -48,8 +48,6 @@ class Cart:
         else:
             return 100000
 
-
-
     def remove(self, product):
         product_id = str(product.id)
         if product_id in self.cart:
