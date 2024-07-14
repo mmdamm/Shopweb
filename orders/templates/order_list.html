@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Tracking</h2>
+
+<table>
+  <tr>
+    <th>id(Click for additional information)</th>
+    <th>created</th>
+    <th>paid</th>
+    <th>buyer</th>
+  </tr>
+  <tr>
+      {% for item in order %}
+
+    <td><a href="#">{{item.id}}</a></td>
+    <td>{{item.created}}</td>
+    <td>{{item.paid}}</td>
+    <td>{{item.buyer}}</td>
+  </tr>
+  {%endfor%}
+
+</table>
+
+</body>
+</html>
+

@@ -156,7 +156,7 @@ def verify(request):
                     item.product.save()
                 order.paid = True
                 order.save()
-                return render(request, 'payment-tracking.html',
+                return render(request, 'order_list.html',
                               {"success": True, 'RefID': reference_id, "order_id": order.id})
             else:
                 return render(request, 'payment-tracking.html',
@@ -167,3 +167,9 @@ def verify(request):
         return HttpResponse('Timeout Error')
     except requests.exceptions.ConnectionError:
         return HttpResponse('Connection Error')
+
+
+def order_list(request):
+    user = request.user
+    order = Order.objects.filter(buyer=user)
+    return render(request, 'order_list.html', {'order': order})
