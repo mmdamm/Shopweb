@@ -33,7 +33,7 @@ tr:nth-child(even) {
   <tr>
       {% for item in order %}
 
-    <td><a href="#">{{item.id}}</a></td>
+    <td><a href="{% url 'orders:order_detail' item.id %}">{{item.id}}</a></td>
     <td>{{item.created}}</td>
     <td>{{item.paid}}</td>
     <td>{{item.buyer}}</td>

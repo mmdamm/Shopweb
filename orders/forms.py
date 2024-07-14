@@ -10,4 +10,4 @@ class PhoneVerificationForm(forms.Form):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'phone', 'address', 'postal_code', 'city']
+        fields = ['first_name', 'last_name', 'phone','address','province', 'postal_code', 'city']

@@ -1,0 +1,29 @@
+
+buyer :  {{order.buyer}}
+<hr>
+{% for item in order.items.all %}
+quantity : {{item.quantity}}
+<br>
+price : {{item.price}}
+<br>
+
+product : <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">{{item.product.description}}</a>
+<br>
+<hr>
+
+{% endfor %}
+total price :{{order.get_final_cost}}
+<br>
+province : {{order.province}}
+<br>
+city :{{order.city}}
+<br>
+created : {{order.created}}
+<br>
+paid : {% if order.paid == True %}
+        paid successful
+        {% else %}
+        paid unsuccessful
+        {% endif %}
+
+

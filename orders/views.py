@@ -173,3 +173,11 @@ def order_list(request):
     user = request.user
     order = Order.objects.filter(buyer=user)
     return render(request, 'order_list.html', {'order': order})
+
+
+def order_detail(request, id):
+    try:
+        order = Order.objects.get(id=id)
+        return render(request, 'order_detail.html', {'order': order})
+    except:
+        return HttpResponse('NOT FOUND')

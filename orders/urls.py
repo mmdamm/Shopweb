@@ -10,4 +10,5 @@ urlpatterns = [
     path('request/', views.send_request, name='request'),
     path('verify/', views.verify, name='verify'),
     path('order_list/', views.order_list, name='order_list'),
+    path('order_details/<int:id>', views.order_detail, name='order_detail'),
 ]
