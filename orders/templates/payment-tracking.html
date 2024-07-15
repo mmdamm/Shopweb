@@ -1,0 +1,14 @@
+<title>Transaction</title>
+    {% if success == True%}
+        Your transaction has been successfully completed.
+        <br>
+        Tracking number: {{RefID}}
+        <br>
+        Order number: {{order_id}}
+        <br>
+        <a href="{% url 'shop:product_list'%}">Return to products</a>
+    {%else%}
+        The transaction was not completed
+        <br>
+        <a href="{% url 'shop:product_list'%}">Return to products</a>
+    {%endif%}

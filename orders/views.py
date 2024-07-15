@@ -156,7 +156,7 @@ def verify(request):
                     item.product.save()
                 order.paid = True
                 order.save()
-                return render(request, 'order_list.html',
+                return render(request, 'payment-tracking.html',
                               {"success": True, 'RefID': reference_id, "order_id": order.id})
             else:
                 return render(request, 'payment-tracking.html',
@@ -174,7 +174,7 @@ def order_list(request):
     order = Order.objects.filter(buyer=user)
     return render(request, 'order_list.html', {'order': order})
 
-
+@login_required
 def order_detail(request, id):
     try:
         order = Order.objects.get(id=id)
