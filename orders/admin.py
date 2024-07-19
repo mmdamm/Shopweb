@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 import openpyxl
 from django.http import HttpResponse
+from django.contrib import messages
 
 
 # Register your models here.
@@ -36,7 +37,16 @@ class OderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'buyer', 'first_name', 'last_name', 'paid', 'status_order']
-    list_filter = ['status_order', 'paid', 'last_name']
+    list_filter = ['status_order', 'paid']
     inlines = [OderItemInline]
     actions = [export_to_excel]
     list_editable = ['status_order']
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        t = Order.STATUS_CHOISES
+        if form.changed_data == ['status_order']:
+            for i in range(8):
+                if t[i][0] == obj.status_order:
+                    # send_sms_normal(t[i][1])
+                    messages.success(request, f'{t[i][1]}')
