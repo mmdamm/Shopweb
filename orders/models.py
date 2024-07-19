@@ -7,7 +7,17 @@ from account.models import *
 
 
 class Order(models.Model):
-    buyer = models.ForeignKey(ShopUser,on_delete=models.SET_NULL,related_name='orders',null=True)
+    class StatusChoices(models.TextChoices):
+        CONFIRM = 'CO', 'Confirm'
+        QUEUE = 'QU', 'In the review queue'
+        RECEIVED = 'RI', 'Received from the seller'
+        PREPARE = 'PR', 'Preparing the order'
+        DELIVER_TO_POST = 'DO', 'Delivery to the post office'
+        DELIVER_TO_CUSTOMER = 'DC', 'Delivery to the customer'
+        RETURN = 'RE', 'Return of the cost due to lack of stock'
+        NOT_PAID = 'NP','Not Paid'
+
+    buyer = models.ForeignKey(ShopUser, on_delete=models.SET_NULL, related_name='orders', null=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=11)
@@ -18,6 +28,7 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
+    status_order = models.CharField(max_length=2, choices=StatusChoices.choices, default=StatusChoices.QUEUE)
 
     class Meta:
         ordering = ['-created']
@@ -27,8 +38,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"order {self.id}"
-
-
 
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())

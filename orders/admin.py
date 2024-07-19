@@ -3,8 +3,9 @@ from .models import *
 import openpyxl
 from django.http import HttpResponse
 
+
 # Register your models here.
-def export_to_excel(modelAdmin,request,queryset):
+def export_to_excel(modelAdmin, request, queryset):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=orders.xlsx'
     wb = openpyxl.Workbook()
@@ -22,7 +23,10 @@ def export_to_excel(modelAdmin,request,queryset):
     wb.save(response)
     return response
 
+
 export_to_excel.short_description = 'Export to Excel'
+
+
 class OderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
@@ -31,7 +35,8 @@ class OderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'buyer', 'first_name', 'last_name', 'paid']
-    list_filter = ['id', 'paid', 'last_name']
+    list_display = ['id', 'buyer', 'first_name', 'last_name', 'paid', 'status_order']
+    list_filter = ['status_order', 'paid', 'last_name']
     inlines = [OderItemInline]
     actions = [export_to_excel]
+    list_editable = ['status_order']
