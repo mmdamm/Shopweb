@@ -174,10 +174,17 @@ def order_list(request):
     order = Order.objects.filter(buyer=user)
     return render(request, 'order_list.html', {'order': order})
 
+
 @login_required
 def order_detail(request, id):
     try:
         order = Order.objects.get(id=id)
-        return render(request, 'order_detail.html', {'order': order})
+        status = order.status_order[1]
+        show_status = Order.STATUS_CHOISES[int(order.status_order[1])]
+        context = {
+            'order': order,
+            'status': show_status[1]
+        }
+        return render(request, 'order_detail.html', context)
     except:
         return HttpResponse('NOT FOUND')

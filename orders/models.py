@@ -8,14 +8,14 @@ from account.models import *
 
 class Order(models.Model):
     STATUS_CHOISES = [
-        ('CO', 'Confirm'),
-        ('QU', 'In the review queue'),
-        ('RI', 'Received from the seller'),
-        ('PR', 'Preparing the order'),
-        ('DO', 'Delivery to the post office'),
-        ('DC', 'Delivery to the customer'),
-        ('RE', 'Return of the cost due to lack of stock'),
-        ('NP', 'Not Paid')
+        ('C0', 'Confirm'),
+        ('Q1', 'In the review queue'),
+        ('R2', 'Received from the seller'),
+        ('P3', 'Preparing the order'),
+        ('D4', 'Delivery to the post office'),
+        ('D5', 'Delivery to the customer'),
+        ('R6', 'Return of the cost due to lack of stock'),
+        ('N7', 'Not Paid')
     ]
 
     buyer = models.ForeignKey(ShopUser, on_delete=models.SET_NULL, related_name='orders', null=True)

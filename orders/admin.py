@@ -3,6 +3,7 @@ from .models import *
 import openpyxl
 from django.http import HttpResponse
 from django.contrib import messages
+from django.shortcuts import render, redirect
 
 
 # Register your models here.
@@ -49,4 +50,5 @@ class OrderAdmin(admin.ModelAdmin):
             for i in range(8):
                 if t[i][0] == obj.status_order:
                     # send_sms_normal(t[i][1])
-                    messages.success(request, f'{t[i][1]}')
+                    messages.success(request, f'"{t[i][1]}" sent to customer')
+
