@@ -180,7 +180,8 @@ def order_detail(request, id):
     try:
         order = Order.objects.get(id=id)
         status = order.status_order[1]
-        show_status = Order.STATUS_CHOISES[int(order.status_order[1])]
+        show_status = list(map(lambda x: Order.STATUS_CHOISES[int(order.status_order[1])][1], Order.STATUS_CHOISES))
+        print(show_status[1])
         context = {
             'order': order,
             'status': show_status[1]
