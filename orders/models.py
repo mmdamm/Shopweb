@@ -7,7 +7,7 @@ from account.models import *
 
 
 class Order(models.Model):
-    STATUS_CHOISES = [
+    STATUS_CHOICES = [
         ('C0', 'Confirm'),
         ('Q1', 'In the review queue'),
         ('R2', 'Received from the seller'),
@@ -29,7 +29,7 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-    status_order = models.CharField(max_length=2, choices=STATUS_CHOISES, default='In the review queue')
+    status_order = models.CharField(max_length=2, choices=STATUS_CHOICES, default='In the review queue')
 
     class Meta:
         ordering = ['-created']

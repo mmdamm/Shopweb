@@ -177,15 +177,19 @@ def order_list(request):
 
 @login_required
 def order_detail(request, id):
-    try:
-        order = Order.objects.get(id=id)
-        status = order.status_order[1]
-        show_status = list(map(lambda x: Order.STATUS_CHOISES[int(order.status_order[1])][1], Order.STATUS_CHOISES))
-        print(show_status[1])
-        context = {
-            'order': order,
-            'status': show_status[1]
-        }
-        return render(request, 'order_detail.html', context)
-    except:
-        return HttpResponse('NOT FOUND')
+    user = request.user
+    order = Order.objects.get(id=id)
+    if user == order.buyer:
+        try:
+
+            status = order.status_order[1]
+            show_status = list(map(lambda x: Order.STATUS_CHOICES[int(order.status_order[1])][1], Order.STATUS_CHOICES))
+            context = {
+                'order': order,
+                'status': show_status[1]
+            }
+            return render(request, 'order_detail.html', context)
+        except:
+            return HttpResponse('NOT FOUND')
+    else:
+        return HttpResponse('This URL is not related to this user.')

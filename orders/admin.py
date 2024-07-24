@@ -45,7 +45,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        t = Order.STATUS_CHOISES
+        t = Order.STATUS_CHOICES
         if form.changed_data == ['status_order']:
             for i in range(8):
                 if t[i][0] == obj.status_order:
