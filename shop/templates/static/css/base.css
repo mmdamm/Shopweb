@@ -99,6 +99,8 @@ a:link, a:visited{
     background-color: #0c1433;
     border-bottom-left-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0, 0.1);
+    display: flex;
+    justify-content:space-between;
 }
 
 .cart-link{
@@ -106,6 +108,7 @@ a:link, a:visited{
     color: #fff;
     display: flex;
     align-items: center;
+
 }
 
 .cart-info-container{
@@ -117,6 +120,7 @@ a:link, a:visited{
     align-items: center;
     padding: 0 10px;
     margin-left: 20px;
+    justify-content:center;
 }
 
 .cart-icon{

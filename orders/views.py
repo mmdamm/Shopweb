@@ -14,24 +14,32 @@ import requests
 import json
 from django.conf import settings
 from orders.models import *
-
-
+import time
+from django.contrib.auth import login,logout
+from django.contrib.auth import authenticate
 def verify_phone(request):
     if request.method == 'POST':
         form = PhoneVerificationForm(request.POST)
         if form.is_valid():
             phone = form.cleaned_data['phone']
             if ShopUser.objects.filter(phone=phone).exists():
+                user = authenticate(request, username=phone,
+                                    password=request.POST['password'])
+                login(request,user)
                 messages.error(request, 'this phone is already registered.')
-                return redirect('orders:verify_phone')
+                return redirect("orders:create_order")
+
             else:
                 tokens = {'token': ''.join(random.choices('0123456789', k=4))}
+                time1 = time.time()
                 request.session['verification_code'] = tokens['token']
                 request.session['phone'] = phone
+                request.session['time1'] = time1
+                request.session['password']=request.POST.get('password')
                 print(tokens)
                 send_sms_normal()
                 messages.error(request, 'verification code sent successfully.')
-                return redirect('orders:verify_code')
+                return redirect('orders:verify_code', )
     elif request.user.is_authenticated:
         return redirect('orders:create_order')
     else:
@@ -41,24 +49,29 @@ def verify_phone(request):
 
 def verify_code(request):
     if request.method == 'POST':
-        code = request.POST.get('code')
-        verification_code = request.session['verification_code']
-        phone = request.session['phone']
-        if code == verification_code:
-            user = ShopUser.objects.create_user(phone)
-            user.set_password('123456')
-            # muss send sms to user
-            user.save()
-            # print(user)
-            login(request, user)
-            del request.session['verification_code']
-            del request.session['phone']
+        time2 = time.time()
+        time1 = request.session['time1']
+        if time2 - time1 < 30:
+            code = request.POST.get('code')
+            verification_code = request.session['verification_code']
+            phone = request.session['phone']
+            if code == verification_code:
+                user = ShopUser.objects.create_user(phone)
+                user.set_password(request.session['password'])
+                # muss send sms to user
+                user.save()
+                # print(user)
+                login(request, user)
+                del request.session['verification_code']
+                del request.session['phone']
 
-            return redirect('orders:create_order')
+                return redirect('orders:create_order')
 
+            else:
+                messages.error(request, 'verification code is wrong')
         else:
-            messages.error(request, 'verification code is wrong')
-
+            messages.error(request, 'verificationg')
+            redirect('orders:verify_phone')
     return render(request, 'verify_code.html')
 
 
@@ -67,7 +80,11 @@ def create_order(request):
     cart = Cart(request)
     if request.method == "POST":
         form = OrderForm(request.POST)
+        # form.first_name(initial='11')
+
+        # form_name = OrderForm.first_name(initial=request.user)
         if form.is_valid:
+
             order = form.save()
             order.buyer = request.user
             order.save()
@@ -180,8 +197,8 @@ def order_detail(request, id):
     user = request.user
     order = Order.objects.get(id=id)
     if user == order.buyer:
-        try:
 
+        try:
             status = order.status_order[1]
             show_status = list(map(lambda x: Order.STATUS_CHOICES[int(order.status_order[1])][1], Order.STATUS_CHOICES))
             context = {

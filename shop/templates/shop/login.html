@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+    <p>You are login</p>
+    <a href="{% url 'shop:product_list'%}">Return to product list</a>
+    <a href="{%%}">Log out</a>
+{%else%}
+    <p>you are not login</p>
+{%endif%}
