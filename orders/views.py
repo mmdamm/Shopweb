@@ -51,7 +51,7 @@ def verify_code(request):
     if request.method == 'POST':
         time2 = time.time()
         time1 = request.session['time1']
-        if time2 - time1 < 30:
+        if time2 - time1 < 120:
             code = request.POST.get('code')
             verification_code = request.session['verification_code']
             phone = request.session['phone']
@@ -70,8 +70,8 @@ def verify_code(request):
             else:
                 messages.error(request, 'verification code is wrong')
         else:
-            messages.error(request, 'verificationg')
-            redirect('orders:verify_phone')
+            messages.error(request, 'The code has expired')
+            return redirect('orders:verify_phone')
     return render(request, 'verify_code.html')
 
 
