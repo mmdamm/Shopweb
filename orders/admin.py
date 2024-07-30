@@ -4,6 +4,7 @@ import openpyxl
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect
+import csv
 
 
 # Register your models here.
@@ -26,7 +27,23 @@ def export_to_excel(modelAdmin, request, queryset):
     return response
 
 
+def export_as_csv(self, request, queryset):
+    meta = self.model._meta
+    field_names = [field.name for field in meta.fields]
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+    writer = csv.writer(response)
+
+    writer.writerow(field_names)
+    for obj in queryset:
+        row = writer.writerow([getattr(obj, field) for field in field_names])
+
+    return response
+
+
 export_to_excel.short_description = 'Export to Excel'
+export_as_csv.short_description = "Export to CSV"
 
 
 class OderItemInline(admin.TabularInline):
@@ -40,7 +57,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'buyer', 'first_name', 'last_name', 'paid', 'status_order']
     list_filter = ['status_order', 'paid']
     inlines = [OderItemInline]
-    actions = [export_to_excel]
+    actions = [export_to_excel,export_as_csv]
     list_editable = ['status_order']
 
     def save_model(self, request, obj, form, change):
@@ -51,4 +68,3 @@ class OrderAdmin(admin.ModelAdmin):
                 if t[i][0] == obj.status_order:
                     # send_sms_normal(t[i][1])
                     messages.success(request, f'"{t[i][1]}" sent to customer')
-
