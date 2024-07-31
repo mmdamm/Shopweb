@@ -2,12 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import *
 from account.models import ShopUser
 import random
-from django.http import HttpResponse
 from django.contrib import messages
 from cart.common.sms import send_sms_with_template, send_sms_normal
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-# Create your views here.
 from cart.cart import Cart
 from django.http import HttpResponse
 import requests
@@ -15,8 +12,13 @@ import json
 from django.conf import settings
 from orders.models import *
 import time
-from django.contrib.auth import login,logout
-from django.contrib.auth import authenticate
+from django.contrib.auth import login, logout, authenticate
+from django_xhtml2pdf.utils import generate_pdf
+from django.template.loader import get_template
+from io import BytesIO
+from xhtml2pdf import pisa
+
+
 def verify_phone(request):
     if request.method == 'POST':
         form = PhoneVerificationForm(request.POST)
@@ -25,7 +27,7 @@ def verify_phone(request):
             if ShopUser.objects.filter(phone=phone).exists():
                 user = authenticate(request, username=phone,
                                     password=request.POST['password'])
-                login(request,user)
+                login(request, user)
                 messages.error(request, 'this phone is already registered.')
                 return redirect("orders:create_order")
 
@@ -35,7 +37,7 @@ def verify_phone(request):
                 request.session['verification_code'] = tokens['token']
                 request.session['phone'] = phone
                 request.session['time1'] = time1
-                request.session['password']=request.POST.get('password')
+                request.session['password'] = request.POST.get('password')
                 print(tokens)
                 send_sms_normal()
                 messages.error(request, 'verification code sent successfully.')
@@ -197,16 +199,45 @@ def order_detail(request, id):
     user = request.user
     order = Order.objects.get(id=id)
     if user == order.buyer:
-
-        try:
-            status = order.status_order[1]
-            show_status = list(map(lambda x: Order.STATUS_CHOICES[int(order.status_order[1])][1], Order.STATUS_CHOICES))
-            context = {
-                'order': order,
-                'status': show_status[1]
-            }
-            return render(request, 'order_detail.html', context)
-        except:
-            return HttpResponse('NOT FOUND')
+        show_status = list(map(lambda x: Order.STATUS_CHOICES[int(order.status_order[1])][1], Order.STATUS_CHOICES))
+        context = {
+            'order': order,
+            'status': show_status[1],
+        }
+        return render(request, 'order_detail.html', context)
     else:
         return HttpResponse('This URL is not related to this user.')
+
+
+def send_to_pdf(request, id):
+    user = request.user
+    order = Order.objects.get(id=id)
+    if user == order.buyer:
+        show_status = list(map(lambda x: Order.STATUS_CHOICES[int(order.status_order[1])][1], Order.STATUS_CHOICES))
+        context_pdf = {
+            'order':order,
+            'status':show_status[1]
+
+        }
+        pdf = render_to_pdf('order_detail_pdf.html', context_pdf)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "order detail_%s.pdf" % order.first_name
+            content = "inline; filename='%s'" % filename
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" % filename
+            response['Content-Disposition'] = content
+            return response
+
+
+def render_to_pdf(template_src, context_dict=None):
+    if context_dict is None:
+        raise ValueError("CSS file data is None. Please check the file path and content.")
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None

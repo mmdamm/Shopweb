@@ -1,0 +1,107 @@
+{% load static tailwind_tags %}
+{% load template_tag%}
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Vazir" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>order detail</title>
+    {% tailwind_css %}
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .order-details {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+        .order-details:hover {
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .detail {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+        .value {
+            color: #333;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d9534f;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 10px;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="order-details">
+        <h1> order detail</h1>
+        <div class="detail">
+            <span class="label">buyer:</span>
+            <span class="value">{{order.buyer}}</span>
+        </div>
+        <br>
+        <div class="detail">
+            <span class="label">name:</span>
+            <span class="value">{{order.first_name}}</span>
+        </div>
+        <br>
+
+        {% for item in order.items.all %}
+        <div class="detail">
+            <span class="label">product:</span>
+            <span class="value"> {{item.product.description}}</span>
+        </div>
+        <br>
+
+        <div class="detail">
+            <span class="label">quantity:</span>
+            <span class="value">{{item.quantity}}</span>
+        </div>
+        <br>
+
+        <div class="detail">
+            <span class="label">price:</span>
+            <span class="value">{{item.product.price}}</span>
+        </div>
+        <hr>
+        {%endfor%}
+        <div class="total text-red-100">
+            <span class="label">total cost:</span>
+            <span class="value">{{order.get_final_cost}}</span>
+        </div>
+    </div>
+</body>
+</html>

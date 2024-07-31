@@ -1,31 +1,78 @@
+{% load static tailwind_tags %}
+{% load template_tag%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa"  dir="rtl">
 
-buyer :  {{order.buyer}}
-<hr>
-{% for item in order.items.all %}
-quantity : {{item.quantity}}
-<br>
-price : {{item.price}}
-<br>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جزئیات سفارش</title>
+    {% tailwind_css %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
 
-product : <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">{{item.product.description}}</a>
-<br>
-<hr>
+<body class="bg-gray-100 text-gray-900">
+<div class="container mx-auto p-6">
+    <header class="bg-blue-600 p-4 text-white text-center rounded-md mb-6">
+        <h1 class="text-3xl font-bold">جزئیات سفارش</h1>
+    </header>
 
-{% endfor %}
-total price :{{order.get_final_cost}}
-<br>
-province : {{order.province}}
-<br>
-city :{{order.city}}
-<br>
-created : {{order.created}}
-<br>
-paid : {% if order.paid == True %}
-        paid successful
+    <section class="bg-white rounded-lg shadow-md p-6 mb-4">
+        <h2 class="text-2xl font-semibold mb-4">جزئیات سفارش</h2>
+
+        <div class="mb-2">
+            <span class="font-bold">تاریخ سفارش   :  {{order.created}}   </span>
+        </div>
+        <div class="mb-2">
+            <span class="font-bold">وضعیت سفارش   :  {{status}}  </span>
+        </div>
+
+        {% if order.paid == True %}
+        <div class="mb-2">
+            <span class="font-bold">استان  :  {{order.province}}</span>
+        </div>
+        <div class="mb-2">
+            <span class="font-bold">شهر  :  {{order.city}}</span>
+        </div>
+        <div class="mb-2">
+            <span class="font-bold">وضعیت پرداخت:پرداخت شده</span>
+        </div>
+        <div class="mb-2">
+            <span class="font-bold">  شماره سفارش:</span>
+        </div>
         {% else %}
-        paid unsuccessful
-        {% endif %}
+         <div class="mb-2">
+            <span class="font-bold ">پرداخت نشده :وضعیت پرداخت  </span>
+        </div>
+        {%endif%}
+    </section>
+
+    <section class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold mb-4">محصولات</h2>
+        {% for item in order.items.all %}
+        <div class="border-b border-gray-200 pb-4 mb-4">
+            <div class="flex justify-between mb-2">
+                <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">{{item.product.description}}</a>
+                <span>تعداد:{{item.quantity}}</span>
+            </div>
+            <div class="flex justify-between">
+                <span>قیمت:</span>
+                <span><span class="text-emerald-400">  {{item.product.off}}تخفیف   </span>      {{item.product.price}} تومان </span>
+
+            </div>
+        </div>
+        {% endfor %}
 
 
-<hr>
-<p>status:{{status}}</p>
+        <div class="flex justify-between font-bold border-t border-gray-200 pt-4">
+            <span>مجموع  : {{order.get_final_cost}}تومان</span>
+
+             <a href="{% url 'orders:pdf' order.id %}">download pdf</a>
+        </div>
+    </section>
+</div>
+
+</body>
+
+</html>
