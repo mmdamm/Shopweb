@@ -55,12 +55,18 @@
             <div class="flex justify-between mb-2">
                 <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">{{item.product.description}}</a>
                 <span>تعداد:{{item.quantity}}</span>
-            </div>
-            <div class="flex justify-between">
-                <span>قیمت:</span>
-                <span><span class="text-emerald-400">  {{item.product.off}}تخفیف   </span>      {{item.product.price}} تومان </span>
 
             </div>
+            <div class="flex">
+                <span class="pl-4">  قیمت: </span>
+                <span><span class="text-emerald-400">  {{item.product.off}}تخفیف   </span>      {{item.product.price}} تومان </span>
+
+
+            </div>
+             {% if order.paid == True %}
+
+                 <a class="hover:text-red-600" href="{% url 'orders:reference' order.id %}">میخواهم این محصول را ارجاع بدهم</a>
+            {%endif%}
         </div>
         {% endfor %}
 

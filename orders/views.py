@@ -17,6 +17,9 @@ from django_xhtml2pdf.utils import generate_pdf
 from django.template.loader import get_template
 from io import BytesIO
 from xhtml2pdf import pisa
+from django.core.mail import BadHeaderError, send_mail
+from shop.models import *
+from django.utils import timezone
 
 
 def verify_phone(request):
@@ -215,8 +218,8 @@ def send_to_pdf(request, id):
     if user == order.buyer:
         show_status = list(map(lambda x: Order.STATUS_CHOICES[int(order.status_order[1])][1], Order.STATUS_CHOICES))
         context_pdf = {
-            'order':order,
-            'status':show_status[1]
+            'order': order,
+            'status': show_status[1]
 
         }
         pdf = render_to_pdf('order_detail_pdf.html', context_pdf)
@@ -241,3 +244,28 @@ def render_to_pdf(template_src, context_dict=None):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+
+
+def reference(request, id):
+    order = Order.objects.filter(id=id)
+    phone = request.user
+    name = request.user.first_name
+    created = order[0].created
+    now = timezone.now()
+    time_d = now - created
+    time_m = time_d.total_seconds() // 60
+    if time_m < 4320:
+        message_user = "کاربر عزیز درخواست شما با موفقیت ارسال شد"
+    else:
+        message_user = "زمان ارجاع دادن محصول گذشته است چون بیشتر از ۷۲ ساعت از خرید شما میگذرد"
+    message_admin = f'" درخواست داده است. {order[0].id}" جهت ارجاع سفارش با ایدی "{phone}" با شماره تلفن "{name}  ادمین محترم کاربر "'
+    send_mail('Refer Product',message_admin, 'mohammad2547mohseny@gmail.com', ['mmhsny429@gmail.com'],
+              fail_silently=False)
+    context = {
+        'order': order[0],
+        'phone': phone,
+        'name': name,
+        'message': message_user
+
+    }
+    return render(request, 'refer.html', context)
