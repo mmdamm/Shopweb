@@ -25,3 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     filter = ['created']
     inlines = [ImageInline, FeatureInline]
+
+@admin.register(ProductSave)
+class ProductSaveAdmin(admin.ModelAdmin):
+    list_display = ['user','products']

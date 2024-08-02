@@ -1,0 +1,32 @@
+{% load static %}
+{% load template_tag%}
+{% load static tailwind_tags %}
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جزئیات محصول</title>
+    {% tailwind_css %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 ">
+    <h2 class="text-xl font-bold m-4"> علاقه مندی ها</h2>
+        <div class="bg-white rounded-md shadow-md p-6 grid h-auto grid-cols-4 gap-6">
+
+
+            {% for i in save %}
+            <div class="">
+
+
+                <div class="bg-gray-200 p-4 rounded-md">
+                    <h3 class="font-semibold">محصول: {{i.product}}</h3>
+
+                    <img src="{{ i.products.images.first.file.url }}" alt="{{i.name}}" class=" object-cover mb-2 rounded-md">
+                    <p class="text-lg font-semibold text-red-500 m-4">
+                       قیمت: {{i.products.price}} تومان</p>
+                    <a class="bg-blue-500 text-white mt-2 px-4 py-1 rounded-md hover:bg-blue-600" href="{{i.products.get_absolute_url}}">جزئیات بیشتر</a>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+</body>

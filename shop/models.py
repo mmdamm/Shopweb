@@ -1,5 +1,6 @@
 from django.db import models
 from django.shortcuts import reverse
+from account.models import ShopUser
 
 
 # Create your models here.
@@ -49,7 +50,7 @@ class Product(models.Model):
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
     def percent(self):
-        return round((self.off/self.price)*100)
+        return round((self.off / self.price) * 100)
 
 
 class Image(models.Model):
@@ -73,3 +74,8 @@ class ProductFeature(models.Model):
 
     def __str__(self):
         return self.name + ":" + self.value
+
+
+class ProductSave(models.Model):
+    user = models.ForeignKey(ShopUser, related_name='user_save', on_delete=models.CASCADE)
+    products = models.ForeignKey(Product,related_name='products_save', on_delete=models.CASCADE,default=None)

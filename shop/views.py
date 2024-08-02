@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -11,6 +11,7 @@ def product_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.all()
+    print(category)
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
@@ -39,3 +40,17 @@ def product_detail(request, id, slug):
         'category': category,
     }
     return render(request, 'shop/detail.html', context)
+
+
+def save(request, id):
+    if request.user.is_authenticated:
+        product = Product.objects.get(id=id)
+        save_p = ProductSave.objects.all()
+        p = []
+        for i in save_p:
+            name = str(i.products)
+            p += [name]
+        if str(product) not in p:
+            save_product = ProductSave.objects.create(user=request.user, products=product)
+            save_product.save()
+        return render(request, 'shop/save.html', {'save': save_p})

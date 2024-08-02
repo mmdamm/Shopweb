@@ -1,99 +1,44 @@
-<div class="cart-container z-10">
-    {% with item_count=cart|length %}
 
-    <a href="{% url 'cart:cart_detail'%}" class="cart-link">
-        <div class="cart-info-container">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+        .count-badge {
+            position: absolute;
 
-            <span class="cart-icon">🛒</span>
-            <span class="cart-info">
-                <span id="item_count" class="item-count">{{ item_count }}</span> items, <span id="total_price" class="total-price">{{ cart.get_total_price }}</span>
-            </span>
-            <br>
+            right: 70px;
+            background-color: gray;
+            color: white;
+            border-radius: 9999px;
+            padding: 0.2em 0.6em;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+  {% with item_count=cart|length %}
+    <header class="bg-gray-100 shadow items-center justify-between flex">
+        <div class="container mx-auto flex justify-between items-center p-4 relative">
+            <h1 class="text-lg font-bold">فروشگاه</h1>
+
+
+                 {% if request.user.is_authenticated%}
+                    <a href="{% url 'orders:order_list'%}" class="text-gray-600 hover:text-blue-600 transition duration-200">لیست سفارشات</a>
+                    <a href="{% url 'accounts:logout'%}" class="text-gray-600 hover:text-blue-600 transition duration-200">خروج از حساب کاربری</a>
+                {%endif%}
+                <a id="cartIcon" href="{% url 'cart:cart_detail'%}" class="relative text-gray-600 hover:text-blue-600 transition duration-200">
+
+                    <span class="count-badge " id="item_count">{{item.count}}</span>
+                    <span class="ml-1">سبد خرید</span>
+                </a>
 
         </div>
+    </header>
+   {% endwith %}
 
-    </a>
-    {% endwith %}
-    {% if request.user.is_authenticated%}
-        <a href="{% url 'orders:order_list'%}" class="cart-link">
-             <div class="cart-info-container">
-        order list
-             </div>
-        </a>
-    {%endif%}
-    {% if request.user.is_authenticated%}
-        <a href="{% url 'accounts:logout'%}" class="cart-link">
-             <div class="cart-info-container">logout
-             </div>
-        </a>
-    {%endif%}
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    $(document).ready(function(){
-
-        $('.quantity-add').on('click', function(){
-            updateQuantity($(this).closest('.product-item').data('item-id'), 'add');
-        });
-
-        $('.quantity-decrease').on('click', function(){
-            updateQuantity($(this).closest('.product-item').data('item-id'), 'decrease');
-        });
-
-        $('.quantity-remove').on('click', function(){
-            removeItem($(this).closest('.product-item').data('item-id'));
-        });
-
-    function updateQuantity(itemId, action){
-        $.ajax({
-            type: 'POST',
-            url: '{% url 'cart:update_quantity' %}',
-            data: {
-                'item_id': itemId,
-                'action': action,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function(response){
-                if (response.success) {
-                    $('#item_count').text(response.item_count);
-                    $('#total_price').text(response.total_price);
-                    $('#item-quantity-'+ itemId).text(response.quantity);
-                    $('#item-total-'+ itemId).text(response.total);
-                    $('#item-total_price').text(response.total_price);
-                    $('#item-final_price').text(response.final_price);
-                } else {
-                    alert('Error updating quantity!');
-                }
-            }
-
-        });
-    }
-
-        function removeItem(itemId){
-            $.ajax({
-                type: 'POST',
-                url: '{% url 'cart:remove_item' %}',
-                data: {
-                    'item_id': itemId,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(response){
-                    if (response.success) {
-                        $('#item_count').text(response.item_count);
-                        $('#total_price').text(response.total_price);
-                        $('#item-total_price').text(response.total_price);
-                        $('#item-final_price').text(response.final_price);
-                        $(`.product-item[data-item-id=${itemId}]`).remove();
-                    } else {
-                        alert('Error updating quantity!');
-                    }
-                }
-
-            });
-        }
-
-    });
-
-</script>
+</body>
+</html>

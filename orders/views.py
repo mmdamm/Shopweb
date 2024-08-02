@@ -255,7 +255,7 @@ def reference(request, id):
     time_d = now - created
     time_m = time_d.total_seconds() // 60
     if time_m < 4320:
-        message_user = "کاربر عزیز درخواست شما با موفقیت ارسال شد"
+        message_user = "کاربر عزیز درخواست شما با موفقیت ارسال شد پشتیبان در اسرع وقت با شما تماس میگیرند"
     else:
         message_user = "زمان ارجاع دادن محصول گذشته است چون بیشتر از ۷۲ ساعت از خرید شما میگذرد"
     message_admin = f'" درخواست داده است. {order[0].id}" جهت ارجاع سفارش با ایدی "{phone}" با شماره تلفن "{name}  ادمین محترم کاربر "'
