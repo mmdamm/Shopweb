@@ -68,3 +68,8 @@ class OrderAdmin(admin.ModelAdmin):
                 if t[i][0] == obj.status_order:
                     # send_sms_normal(t[i][1])
                     messages.success(request, f'"{t[i][1]}" sent to customer')
+
+@admin.register(DiscountCode)
+class OrderAdmin(admin.ModelAdmin):
+    display=['code','discount_amount','is_active']
+    list_filter=['is_active']

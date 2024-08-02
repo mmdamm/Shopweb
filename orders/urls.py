@@ -13,4 +13,5 @@ urlpatterns = [
     path('order_details/<int:id>', views.order_detail, name='order_detail'),
     path('pdf/<int:id>>', views.send_to_pdf, name='pdf'),
     path('reference/<int:id>', views.reference, name='reference'),
+    path('apply-discount/',views.apply_discount, name='apply_discount'),
 ]

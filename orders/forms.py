@@ -9,7 +9,7 @@ class PhoneVerificationForm(forms.Form):
 
 
 class OrderForm(forms.ModelForm):
-    # first_name = forms.CharField()
+
     class Meta:
         model = Order
 

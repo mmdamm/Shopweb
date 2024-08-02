@@ -6,7 +6,7 @@ from django.contrib import messages
 from cart.common.sms import send_sms_with_template, send_sms_normal
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 import requests
 import json
 from django.conf import settings
@@ -269,3 +269,22 @@ def reference(request, id):
 
     }
     return render(request, 'refer.html', context)
+
+
+
+
+def apply_discount(request):
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        try:
+            discount = DiscountCode.objects.get(code=code, is_active=True)
+            response = {
+                'success': True,
+                'discount_amount': discount.discount_amount
+            }
+        except DiscountCode.DoesNotExist:
+            response = {
+                'success': False,
+                'message': 'کد معتبر نیست.'
+            }
+        return JsonResponse(response)

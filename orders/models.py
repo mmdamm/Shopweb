@@ -69,3 +69,12 @@ class OrderItem(models.Model):
 
     def get_weight(self):
         return self.quantity * self.weight
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code
