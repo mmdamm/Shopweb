@@ -15,18 +15,20 @@
 
 
             {% for i in save %}
-            <div class="">
 
 
-                <div class="bg-gray-200 p-4 rounded-md">
-                    <h3 class="font-semibold">محصول: {{i.product}}</h3>
+
+                <div class="bg-gray-200 p-4 rounded-md h-auto relative h-[600px]">
+                    <h3 class="font-semibold m-4">محصول: {{i.products}}</h3>
 
                     <img src="{{ i.products.images.first.file.url }}" alt="{{i.name}}" class=" object-cover mb-2 rounded-md">
-                    <p class="text-lg font-semibold text-red-500 m-4">
-                       قیمت: {{i.products.price}} تومان</p>
-                    <a class="bg-blue-500 text-white mt-2 px-4 py-1 rounded-md hover:bg-blue-600" href="{{i.products.get_absolute_url}}">جزئیات بیشتر</a>
+                    <div class="flex justify-between items-center relative">
+                         <a class="absolute bg-blue-500 text-white mt-2 px-4 py-1 rounded-md hover:bg-blue-600 bottom-2" href="{{i.products.get_absolute_url}}">جزئیات بیشتر</a>
+                        <span class="absolute text-lg font-semibold text-red-500 m-4 left-0">قیمت: {{i.products.price}} تومان</span>
+                    </div>
                 </div>
-            </div>
+
+
             {%endfor%}
         </div>
 </body>

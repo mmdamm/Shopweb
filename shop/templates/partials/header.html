@@ -29,6 +29,7 @@
                  {% if request.user.is_authenticated%}
                     <a href="{% url 'orders:order_list'%}" class="text-gray-600 hover:text-blue-600 transition duration-200">لیست سفارشات</a>
                     <a href="{% url 'accounts:logout'%}" class="text-gray-600 hover:text-blue-600 transition duration-200">خروج از حساب کاربری</a>
+                    <a href="{% url 'shop:save_list'%}" class="text-gray-600 hover:text-blue-600 transition duration-200">لیست علاقه مندی</a>
                 {%endif%}
                 <a id="cartIcon" href="{% url 'cart:cart_detail'%}" class="relative text-gray-600 hover:text-blue-600 transition duration-200">
 

@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -53,4 +55,12 @@ def save(request, id):
         if str(product) not in p:
             save_product = ProductSave.objects.create(user=request.user, products=product)
             save_product.save()
-        return render(request, 'shop/save.html', {'save': save_p})
+            return HttpResponse('با موفقیت ذخیره شد')
+        else:
+            return HttpResponse('شما قبلا این محصول به فهرست علاقه مندیتان اضافه کرده اید.')
+
+
+def save_list(request):
+    if request.user.is_authenticated:
+        save = ProductSave.objects.all()
+        return render(request, 'shop/save.html', {'save': save})

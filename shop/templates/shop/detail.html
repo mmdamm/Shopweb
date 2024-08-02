@@ -2,16 +2,17 @@
 {% load static %}
 {% load template_tag%}
 {% load static tailwind_tags %}
-{% block content %}
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جزئیات محصول</title>
+    {%block title%}order detail{%endblock%}
     {% tailwind_css %}
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+{% block content %}
 <body class="bg-gray-100">
     <div class="container w-full p-6">
         <div class="bg-white rounded-md shadow-md p-6 mb-6 w-full">
@@ -29,6 +30,7 @@
             {%endif%}
 
             <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" type="button" id="add-cart">اضافه به سبد خرید</button>
+
             <a href="{% url 'shop:save' product.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">افزودن به علاقه مندی ها</a>
 
             <hr class="my-4">
